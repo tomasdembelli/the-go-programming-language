@@ -71,5 +71,32 @@ var s = ""
 var s string = ""
 ```
 
+A map provides a constant-time operations to store, retrieve for an item in the set.
+The map key can be any type whose values can be compared with `==`. The map value can be any type at all.
+The order of map iteration is random _practically_.
+
+Quoted string conversion character is `%q`.
+
+A map is a reference to the data structure created by make. When a map is passed as an argument to a function, the function receives a copy of the reference. Any change in the function will be visible on the actual map. Example [code](./map/main.go).
+
+The value of a constant **must** be a string, number or boolean.
+
+Composite literals are a compact notation for instantiating any of Go's composite types, i.e., slice, struct.
+
+A `goroutine` is a concurrent function execution.
+
+A `channel` is a communication mechanism that allows one goroutine to pass values of a specified type to another goroutine.
+
+When one goroutine attempts to send or receive on an un-buffered channel, it blocks until another goroutine attempts the corresponding receive or send operation. When the value is transferred, both goroutines proceed.
+
+HTTP server runs the handler functions for each incoming request in a separate goroutine so that it can serve multiple requests simultaneously.
+
+`io.Writer` interface is commonly used across the standard library. From stdout to http response writer. Investigate further and use it to take advantage of its common usage.
+
+Tagless switch is equivalent to switch true.
+The `default` statement can be placed in between case statements.
+Case statements do not fall through from one to next. But there is a fallthrough statement that overrides this behavior. An [example](https://golangbyexample.com/fallthrough-keyword-golang/) for fallthrough statement.
+
+The `&` operator yields the address of a variable, and the `*` operator retrieves the variable that the pointer refers to.
 
 
