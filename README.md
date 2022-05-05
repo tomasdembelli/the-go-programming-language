@@ -99,4 +99,78 @@ Case statements do not fall through from one to next. But there is a fallthrough
 
 The `&` operator yields the address of a variable, and the `*` operator retrieves the variable that the pointer refers to.
 
+## Program Structure
+
+**What is a programming language?**
+- One builds large programs from small set of constructs.
+- Variables store values.
+- Simple expressions are combined into larger ones with operations like addition and subtraction.
+- Basic types are collected into aggregates like arrays and structs.
+- Expressions are used in statements whose execution order is determined by `control-flow` statements like `if` and `for`.
+- Statements are grouped into functions for isolation and reuse.
+- Functions are gathered into source files and packages.
+
+### Names
+
+There are 25 keywords that are reserved, like `if`, `for`, etc.
+
+There are around 30 predeclared names like `int`, `true`, `nil`. They are not reserved. But, reusing them requires special cases and care.
+
+Package names are always in lower case. If an entity start with an upper case then it is exported and available outside of the package.
+
+Names should be short. However, if it is used outside of its own package, more expressive names can be used. The larger the scope of a name, the longer and more meaningful it should be.
+
+Stylistically, camelCase is used, but not enforced. Acronyms and initialisms like ASCII and HTML are always used in the same case: **correct** `escapeHTML`, **incorrect** `escapeHtml`. 
+
+
+### Declarations
+
+A `declaration` names a `program entity` and `specifies` some or all of its `properties`.
+
+There are 4 major type of declarations: `var`, `const`, `type`, `func`.
+
+Local declarations are `visible` only within the function in which they are declared.
+
+At the end of running a function, `control` and any results are then returned to the caller.
+
+
+### Variables
+
+The general variable declaration form: 
+
+`var name type = expression` : The expression is the initial value.
+
+Other options:
+
+`var name = expression`: The type is determined by the initializer expression.
+
+Or,
+
+`var name type` : The initial value is the `zero value` for the type.
+
+Zero values:
+- `0` for numbers
+- `false` for booleans
+- `""`, empty string, for strings
+- `nil` for interfaces and `reference types` (slice, pointer, map, channel, function)
+
+The zero value of an aggregate type like an `array` or a `struct` has the zero value of all its elements or fields.
+
+Zero value mechanism ensures that a variable always holds a well-defined value of its type.
+There is no such thing as an uninitialized variable in Go, which prevents unpredictable errors.
+
+Short variable declaration can only be used in functions.
+
+`a := 5` equals to `var a int = 5`
+
+If we wanted `a` to be a `float64` type with the same initial value we had to use the long declaration. See [test](./types/types_test.go).
+
+`var a float64 = 5`
+
+
+
+
+
+
+
 
