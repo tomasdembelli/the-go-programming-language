@@ -163,14 +163,30 @@ Short variable declaration can only be used in functions.
 
 `a := 5` equals to `var a int = 5`
 
-If we wanted `a` to be a `float64` type with the same initial value we had to use the long declaration. See [test](./types/types_test.go).
+If we wanted `a` to be a `float64` type with the same initial value we had to use the long declaration. See [TestTypes](./tests/misc_test.go).
 
 `var a float64 = 5`
 
+#### Pointers
 
+A `variable` is a storage containing a value.
 
+A `pointer value` is the address of a variable.
 
+```
+a := 5
+p := &a  // get the address of a and assign it to p
+*p = 6  // update the value of the variable pointed by p, which is a
+a == 6  // true  - now the value is 6
+```
+See [TestPointer](./tests/misc_test.go).
 
+Each component of aggregate type, a field of a struct or an element of an array, is also a variable and thus has an address too.
 
+Expressions that denote variables are the only expressions to which the address-of operator `&` may be applied.
 
+Two pointers are equal `==` if and only if they point to the same variable or both are `nil`.
 
+A function can update a value of a passed argument as a side effect when the argument is a pointer to the this variable.
+
+Creating a pointer to a variable is called `aliasing`. Aliasing also occurs when we copy values of reference types like slices, maps, and channels, and even structs, arrays, and interfaces that contain these types. For example if we pass a slice to a function as a variable (not a pointer), the function will/can manipulate the original slice. 
