@@ -190,3 +190,50 @@ Two pointers are equal `==` if and only if they point to the same variable or bo
 A function can update a value of a passed argument as a side effect when the argument is a pointer to the this variable.
 
 Creating a pointer to a variable is called `aliasing`. Aliasing also occurs when we copy values of reference types like slices, maps, and channels, and even structs, arrays, and interfaces that contain these types. For example if we pass a slice to a function as a variable (not a pointer), the function will/can manipulate the original slice. 
+
+The `new` function creates an `unnamed variable` of type T, initializes it to the zero value of T, and returns its address, which is a value of type *T.
+
+Followings are identical:
+```Go
+func newInt() *int {
+    var i int
+    return &i
+}
+
+func newInt() *int {
+    return new(int)
+}
+```
+
+#### Lifetime of a variable
+
+The lifetime of package-level variable is the entire execution of the program.
+
+Local variables live on from the declaration until it becomes unreachable, at which point its storage may be `recycled`.
+
+Pointers and other kind of references that ultimately lead to a variable keeps a local variable alive. When no such path exists anymore, then the variable becomes unreachable. It can no longer affect the rest of the computation.
+
+The Go compiler decides where to store a variable, `stack` or `heap`. But, if a local variable is referenced by a global pointer, then this local variable escapes/outlives the function it has been created. It keeps living on, thanks to the global pointer, on the heap memory. Stack is used for short lived variables.
+
+`Tip`: Do not keep pointers to short-lived objects in long-lived objects if it is not needed. This will prevent the garbage collector from reclaiming the short-lived objects.
+
+#### Assignment
+
+Each of the arithmetic and bitwise binary operators has a corresponding `assignment operator`, i.e., `*=`.
+
+Assignment operators save us from having to repeat and re-evaluate the expression for the variable.
+```Go
+count[x] = count[x]*5 // re-evaluate the `count[x]` expression
+
+count[x] *= 5  // no re-evaluation of the expression
+```
+`Tuple assignment` is used when assigning value to multiple variables in one line, i.e., reading 2 values (1 is error) from a function. Other use case is swapping the values of two variables. This is possible due to evaluating the right hand side before updating the left hand side.
+```Go
+a, b = b, a // their values are swapped without needing a temp variable
+```
+
+Assignment is `legal` only if the value is assignable to the type of the variable.
+
+An `implicit assignment` happens when a variable gets assigned a value without using the `=` operator. For example, when a function is called, its parameters get assigned with the argument values implicitly.
+
+`nil` may be assigned to any variable of interface or reference type.
