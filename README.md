@@ -237,3 +237,34 @@ Assignment is `legal` only if the value is assignable to the type of the variabl
 An `implicit assignment` happens when a variable gets assigned a value without using the `=` operator. For example, when a function is called, its parameters get assigned with the argument values implicitly.
 
 `nil` may be assigned to any variable of interface or reference type.
+
+A `type declaration` defines a new named type that has the same underlying type as an existing type.
+```Go
+type name underlying-type
+
+type Celsius float64
+type Fahrenheit float64
+```
+
+Type declaration prevents inadvertent errors like combining incompatible values (Celsius and Fahrenheit) in an arithmetic operation. Even though they have the same underlying-type, `float64`, they can not be compared or combined in arithmetic operations.
+
+A conversion `T(x)` - converting x into T- is allowed when they both have the same underlying-type. 
+
+This conversion does not change the representation of the value: `Celsius(34.5) => 34.5`
+
+A conversion never fails at run time. Converting float to int results in loosing the fraction part. Converting string to slice of byte allocates a copy of the string data.
+
+Creating a `String()` method on the named type will enable `%v` and `%s` conversion characters to represent the named value as defined in the `String()` method.
+
+```Go
+type Celsius float64
+
+func(c Celsius) String() string {return fmt.Sprintf("%g°C", c)}
+
+c := 100
+
+fmt.Println(c) // 100°C
+fmt.Printf("%v", c) // 100°C
+```
+
+
