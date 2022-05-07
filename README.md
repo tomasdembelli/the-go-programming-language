@@ -327,3 +327,22 @@ if f, err := os.Open(fileName); err!= nil {
 ```
 
 
+## Basic Data Types
+
+Computers operate fundamentally on fixed-size numbers called `word`s.
+
+There are four types of types: 
+- Basic: numbers, strings, and booleans
+- Aggregate: array and struct 
+- Reference: map, slice, channel, pointer, functions 
+- Interface
+
+`int` and `uint` have the same size, either `32` or `64`.
+
+`rune` holds a Unicode code point and it is a synonym for `uint32`.
+`byte` is a raw data and it is a synonym for `uint8`.
+They may be used interchangeably. 
+
+Unsigned numbers tend to be used only when their bitwise operators or peculiar arithmetic operators are required. 
+They are typically not used for merely non-negative quantities.
+
