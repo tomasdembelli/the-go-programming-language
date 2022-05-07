@@ -267,4 +267,63 @@ fmt.Println(c) // 100°C
 fmt.Printf("%v", c) // 100°C
 ```
 
+#### Packages and Files
+
+Packages in Go supports modularity, encapsulation, separate compilation, and reuse.
+
+To refer to a function from outside its package, we must `qualify` the identifier to make it explicit.
+
+Exported identifiers start with an upper-case letter.
+
+Only one file in each package should have a package doc comment. Extensive doc comments are often placed in a file of their own, conventionally called `doc.go`.
+
+Every package is identified by a unique string called its `import path`. The Go language does not define where these strings come from or what they mean; it's up to the tools to interpret them. For `go` tool, it denotes a directory containing one or more Go source files that together make up the package.
+
+By convention, a package's name matches the last segment of its import path.
+
+Package initialization begins with by initializing package-level variables in the order in which they are declared, except that dependencies are resolved first.
+
+`go` tool sorts files in a package by their names before giving it to the compiler.
+
+If there is a complex logic at package initialization, the `init function` can be used. A init function can not be called, otherwise it is a normal function. A package can have multiple init functions. They will be executed in the order in which they are declared.
+
+Packages are initialized in the order of import, dependencies first. So, if package p imports q, then q will be fully initialized before p. The main package is the last to initialize.
+
+#### Scope
+
+The scope of a declaration is the part of the source code where a use of the declared name refers to that declaration.
+
+The `scope` should not be confused with the lifetime. Scope is a `compile-time property` that represents the region of the program text. The `lifetime` of a variable is a `run-time property` which is the duration that a variable can be referred to by other parts of the program.
+
+A `syntactic block` is a sequence of enclosed statements enclosed in braces like those that surround the body of a function or loop.
+
+A name declared inside a syntactic block is not visible outside that block.
+
+A `lexical block` is not bound by braces. The lexical block for the entire source code is called the `universe block`. 
+
+The built-in types, functions are in the universe block and can be referred to throughout the entire program.
+
+Declaration outside functions, that is, at `package level`, can be referred to from any file in the same package.
+
+Imported packages are only available in the file that they are imported to, `file level`.
+
+`Shadowing`: When the compiler encounters a reference to a name, it looks for a declaration, starting from the innermost enclosing lexical block and working up to the universe block. If there are 2 variables with the same name where 1 is local and the other one is global, or lives in a larger scope, the local one wins/shadows/hides the other one.
+
+Normal practice in Go is do deal with the error in the if block and then return, so that the successful execution path is not indented.
+```Go
+// Good
+f, err := os.Open(fileName)
+if err != nil {
+    return err
+}
+// do stuff with f
+
+//Not great
+if f, err := os.Open(fileName); err!= nil {
+    return err
+} else {
+    //do stuff with f
+}
+```
+
 
