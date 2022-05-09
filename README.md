@@ -383,6 +383,51 @@ Because strings are immutable, this is not allowed: `s[3] = "L"`.
 
 Immutability enables sharing the same underlying string between multiple variables that have the same or similar (partially same - substring) values. See page 66 for the illustration.
 
+`String literal`: A sequence of bytes enclosed in double quotes.
+
+We can include Unicode code points in string literals because Go source files are always encoded in UTF-8.
+
+`Escape sequence`s can be used to insert arbitrary byte values into string. They start with backslash, `\n` (newline) , `\t` (tab).
+
+A `raw string literal` is written between backquotes, ``some raw text``.
+Escape sequences will be ignored in raw string literals. The backslashes will be represented as they are, not as an escape character.
+
+Unicode assigns a standard number called a `Unicode code point`, in Go terminology a `rune`, to every characters in every language in the world.
+
+Representing a Unicode code point requires an int32. But, since most of the time the meaningful part can still fit in 1 byte (which is for the ASCII characters), it would be waste of memory if we use int32 every time. To fix that issue, UTF-8 has been developed, which is a variable-length encoding that can be 1 to 4 bytes depending on the character encoded. UTF-8 is ASCII backward compatible.
+
+`Rune literal`s are written in single quote.
+
+Looping over a string:
+- character by character (rune == character in Go):
+```Go
+	for i, r := range "€"  {  // r is a rune (int32)
+		fmt.Printf("%d, %q, %d\n",i, r, r)
+	}
+    //outputs (only 1 iteration, since there is 1 characters)
+    0, '€', 8364
+```
+- byte by byte:
+```Go
+    euroSign := "€"
+	for i:=0; i < len(euroSign); i++  {
+        // r is a byte, because string is a sequence of bytes
+        r := euroSign[i]  
+		fmt.Printf("%d, %q, %d\n",i, r, r)
+	}
+    // outputs (3 iterations due to 3 bytes)
+    0, 'â', 226
+    1, '\u0082', 130
+    2, '¬', 172
+```
+
+See page 70 for an illustration.
+
+
+
+
+
+
 
 
 

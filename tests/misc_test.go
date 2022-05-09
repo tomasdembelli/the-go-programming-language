@@ -1,6 +1,7 @@
 package scratch
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -85,4 +86,19 @@ func TestStrings(t *testing.T) {
 		t.Errorf("expected 3, got %d", len(euroSign))
 	}
 
+	fmt.Println("\xE2\x82\xAC")
+
+
+	if euroSign != "\xE2\x82\xAC"  {
+		t.Errorf("expected %v, but got %v", euroSign, "\xE2\x82\xAC")
+	}
+
+	// for i, r := range "€"  {
+	// 	fmt.Printf("%d, %q, %d\n",i, r, r)
+	// }
+
+	for i:=0; i < len(euroSign); i++  {
+        r := euroSign[i]
+		fmt.Printf("%d, %q, %d\n",i, r, r)
+	}
 }
