@@ -70,6 +70,19 @@ func TestPointer(t *testing.T) {
 	if s[0] != 999 {
 		t.Errorf("expected 999, but got %d", s[0])
 	}
+}
 
+func TestStrings(t *testing.T) {
+	engWord := "hello"
+
+	if len(engWord) != 5 {
+		t.Errorf("expected 4, got %d", len(engWord))
+	}
+
+	euroSign := "€"  // the non-ASCII `€` character takes 3 bytes, hence the length is 3 as opposed to 1 (number of characters)
+
+	if len(euroSign) != 3 {
+		t.Errorf("expected 3, got %d", len(euroSign))
+	}
 
 }

@@ -104,11 +104,14 @@ The `&` operator yields the address of a variable, and the `*` operator retrieve
 **What is a programming language?**
 - One builds large programs from small set of constructs.
 - Variables store values.
-- Simple expressions are combined into larger ones with operations like addition and subtraction.
+- Simple expressions* are combined into larger ones with operations like addition and subtraction.
 - Basic types are collected into aggregates like arrays and structs.
 - Expressions are used in statements whose execution order is determined by `control-flow` statements like `if` and `for`.
 - Statements are grouped into functions for isolation and reuse.
 - Functions are gathered into source files and packages.
+
+`Operand` is an `expression*` that yields a value that an `operator` operates on.
+
 
 ### Names
 
@@ -331,7 +334,7 @@ if f, err := os.Open(fileName); err!= nil {
 
 Computers operate fundamentally on fixed-size numbers called `word`s.
 
-There are four types of types: 
+There are four categories of types: 
 - Basic: numbers, strings, and booleans
 - Aggregate: array and struct 
 - Reference: map, slice, channel, pointer, functions 
@@ -345,4 +348,47 @@ They may be used interchangeably.
 
 Unsigned numbers tend to be used only when their bitwise operators or peculiar arithmetic operators are required. 
 They are typically not used for merely non-negative quantities.
+
+`float64` should be used instead of `float32`, unless there is a good reason.
+
+Digits maybe omitted when writing a float number, i.e., `.4` or `34.`.
+
+The `complex(real, imag)` function can be used to construct a complex number.
+There are two types: `complex64` and `complex128`.
+
+Short-circuit behavior: If the answer is already determined by the value of the left operand (expression), `<left_operand> && <right_operand>`, the right operand is not evaluated.
+
+`&&` has higher precedence than `||`, because `&&` is Boolean multiplication, `||` is Boolean addition.
+
+### String
+
+A `string` is an `immutable` sequence of bytes.
+
+A string usually contains a `human readable text`.
+
+Text strings are conventionally interpreted as UTF-8 encoded sequences of Unicode code points (runes).
+
+The `len` function returns the `number of bytes` in a string.
+
+`s[i]` returns the `i-th` byte in the string `s`. But this does not mean that it will return the `i-th` character.
+Because, the [UTF-8](https://en.wikipedia.org/wiki/UTF-8) encoding of non-ASCII code point requires two or more bytes. See the [TestStrings](./tests/misc_test.go) test.
+
+The substring operation `s[2:5]` yields a `new` string including the second byte but not including the fifth byte.
+
+The `+` operator makes a `new` string by concatenating two strings.
+
+String values are `immutable`. But a string variable can be updated. In the background a new string is created instead of mutating its value.
+
+Because strings are immutable, this is not allowed: `s[3] = "L"`.
+
+Immutability enables sharing the same underlying string between multiple variables that have the same or similar (partially same - substring) values. See page 66 for the illustration.
+
+
+
+
+
+
+
+
+
 
