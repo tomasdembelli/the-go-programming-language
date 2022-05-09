@@ -396,7 +396,7 @@ Unicode assigns a standard number called a `Unicode code point`, in Go terminolo
 
 Representing a Unicode code point requires an int32. But, since most of the time the meaningful part can still fit in 1 byte (which is for the ASCII characters), it would be waste of memory if we use int32 every time. To fix that issue, UTF-8 has been developed, which is a variable-length encoding that can be 1 to 4 bytes depending on the character encoded. UTF-8 is ASCII backward compatible.
 
-`Rune literal`s are written in single quote.
+[`Rune literal`](https://go.dev/ref/spec#Rune_literals)s are written in single quote.
 
 Looping over a string:
 - character by character (rune == character in Go):
@@ -423,6 +423,14 @@ Looping over a string:
 
 See page 70 for an illustration.
 
+Because strings are immutable, building up strings incrementally can involve a lot of allocation and copying.
+In such cases, it is more efficient to use `bytes.Buffer` type.
+
+The `bytes` package has many functions that the `strings` package have. `Contains, Count, Fields, HasPrefix, Index, Join`. 
+This allows us to convert a string into a byte slice and do manipulation on it more efficiently.
+Because a slice is not immutable and it won't create a copy of the data at every manipulation as the `strings` package would do for the immutable strings.
+
+`bytes.Buffer` can be used for constructing strings. It does not require initialization, because its zero value is usable.
 
 
 

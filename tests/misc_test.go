@@ -1,6 +1,7 @@
 package scratch
 
 import (
+	"bytes"
 	"fmt"
 	"reflect"
 	"testing"
@@ -86,7 +87,7 @@ func TestStrings(t *testing.T) {
 		t.Errorf("expected 3, got %d", len(euroSign))
 	}
 
-	fmt.Println("\xE2\x82\xAC")
+	fmt.Println("\xE2\x82\xAC")  // "€"
 
 
 	if euroSign != "\xE2\x82\xAC"  {
@@ -97,8 +98,18 @@ func TestStrings(t *testing.T) {
 	// 	fmt.Printf("%d, %q, %d\n",i, r, r)
 	// }
 
-	for i:=0; i < len(euroSign); i++  {
-        r := euroSign[i]
-		fmt.Printf("%d, %q, %d\n",i, r, r)
+	// for i:=0; i < len(euroSign); i++  {
+    //     r := euroSign[i]
+	// 	fmt.Printf("%d, %q, %d\n",i, r, r)
+	// }
+
+	var buf bytes.Buffer
+	buf.WriteByte('a')
+	buf.WriteByte('n')
+	buf.WriteRune('€')
+	buf.WriteString("a")
+	if buf.String() != "an€a" {
+		t.Errorf("expected an€, got %v", buf.String())
 	}
+
 }
