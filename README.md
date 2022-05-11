@@ -432,6 +432,8 @@ Because a slice is not immutable and it won't create a copy of the data at every
 
 `bytes.Buffer` can be used for constructing strings. It does not require initialization, because its zero value is usable.
 
+page 74: do the exercises
+
 
 
 
