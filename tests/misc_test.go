@@ -111,5 +111,20 @@ func TestStrings(t *testing.T) {
 	if buf.String() != "an€a" {
 		t.Errorf("expected an€, got %v", buf.String())
 	}
+}
+
+func TestArray(t *testing.T) {
+	a := [...]int{1,2}
+
+	// length is determined by the number of initializers.
+	if len(a) != 2 { 
+		t.Errorf("expected 2, got %d", len(a))
+	}
+
+	q := [...]int{99: 5}
+
+	if len(q) != 100 {
+		t.Errorf("expected 100, got %d", len(q))		
+	}
 
 }

@@ -442,6 +442,41 @@ Many constants are not committed to a particular type.
 
 By deferring this commitment, `untyped constants` not only retain their `higher precision` until later, but they can participate in many more expressions than committed constants `without requiring conversions`.
 
+## Composite Types
+
+Basic types are the atoms of our (Go) universe.
+
+Composite types are the molecules created by combining the basic types in various ways.
+
+Arrays and structs are aggregate types and their size is fixed. Also, `arrays are homogeneous`, whereas `structs are heterogeneous`.
+
+`Slices and maps are dynamic data structures` that grow as values are added.
+
+Array contains one particular type only. Its elements can be accessed via `subscript notation`, where subscripts run from zero to one less than the array length.
+
+We can use an `array literal` to initialize an array with a list of values.
+
+Usage of `ellipsis`:
+`a := [...]int{1,2}`, The length of the array `a` is determined by the number of initializers.
+
+The size of an array is part of its type.
+```Go
+a := [2]int{1,2}
+a = [3]int{1,2,3}
+````
+This returns an [incompatible assign](https://pkg.go.dev/golang.org/x/tools/internaltypesinternal#IncompatibleAssign)
+
+It is possible to specify the index of elements while initializing an array,
+
+`a := [...]int{99: 5}` This will initiate an array in size of 100. Except the last element, all other elements values will be `0`.
+
+Arrays can be compared if their element types are comparable and their sizes are the same.
+
+When a function is called, a copy of each argument vale is assigned to the corresponding parameter variable, so he function receives a copy, not the original.
+
+
+
+
 
 
 
