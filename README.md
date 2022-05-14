@@ -432,7 +432,15 @@ Because a slice is not immutable and it won't create a copy of the data at every
 
 `bytes.Buffer` can be used for constructing strings. It does not require initialization, because its zero value is usable.
 
-page 74: do the exercises
+`strconv` can be used to convert a string in to number and vice a versa. `Itoa` => Integer to ASCII
+
+`Constants` are `expressions` whose value is known to the `compiler` and whose evaluation is guaranteed to occur at compile time. The underlying type of every constant is a `basic type: boolean, string, or number`.
+
+`Iota`, `constant generator`, begins at zero and increments by one for each item in the sequence.
+
+Many constants are not committed to a particular type.
+
+By deferring this commitment, `untyped constants` not only retain their `higher precision` until later, but they can participate in many more expressions than committed constants `without requiring conversions`.
 
 
 
