@@ -127,4 +127,25 @@ func TestArray(t *testing.T) {
 		t.Errorf("expected 100, got %d", len(q))		
 	}
 
+	months := [...]string{"January", "February", "March", "April"}  // type is array
+
+	s1 := months[1:3]  // type is slice: len 2, cap 3 (cap starts from 1 - February, but ends at the end of the array - April)
+
+	if cap(s1) != 3 {
+		t.Errorf("expected 3, got %d", cap(s1))
+	}
+
+	s1[1] = "hello"  // this will mutate the underlying array - months[2]
+
+	if months[2] != "hello" {
+		t.Errorf("expected hello, got %s", months[2])
+	}
+
+	s1 = append(s1, "test")
+
+	if months[3] != s1[2] {
+
+		t.Errorf("expected %s, got %s", s1[2], months[3])
+	}
+
 }

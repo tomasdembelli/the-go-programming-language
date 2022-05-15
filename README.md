@@ -474,6 +474,24 @@ Arrays can be compared if their element types are comparable and their sizes are
 
 When a function is called, a copy of each argument vale is assigned to the corresponding parameter variable, so he function receives a copy, not the original.
 
+`Slices` represent variable-length sequences whose elements all have the same type.
+
+A slice is a lightweight data structure that gives access to its underlying array.
+
+A slice has 3 components; a `pointer`, a `length`, and a `capacity`. Pointer points to the first element of the slice (not necessarily the array's first element).The length is the number of slice elements, it can't exceed the capacity. The capacity is usually the number of elements between the start of the slice and the end of the underlying array.
+
+Unlike arrays, slices are not comparable. So, we cannot use == operator on slices. We need to write a custom comparison function depending on the use case. 
+
+The zero value of a slice type is nil.
+
+```Go
+var s []int // len(s) == 0, s == nil
+s := nil // len(s) == 0, s == nil
+s = []int(nil) // **conversion expression** len(s) == 0, s == nil
+s = []int{} // len(s) == 0, s != nil
+```
+
+The `make` functions creates an unnamed array variable and returns a slice of it; the array is accessible only through the returned slice.
 
 
 
