@@ -493,6 +493,80 @@ s = []int{} // len(s) == 0, s != nil
 
 The `make` functions creates an unnamed array variable and returns a slice of it; the array is accessible only through the returned slice.
 
+We can not know that whether a given call to `append` will cause a reallocation, 
+so we can't assume that the original slice refers to the same array as the resulting slice, nor that it refers to a different one.
+
+Slices are not `pure` reference type but resemble an aggregate type such as this struct:
+```Go
+type IntSlice struct {
+    ptr *int
+    len, cap int
+}
+```
+
+`Variadic function`s accept any number of final arguments.
+
+A hash table is an unordered collection of `key:value` pairs.
+
+In Go, a `map` isa reference to a hash table.
+
+The `key` type must be a `comparable` with `==` operator.
+
+A map element is nota variable, so we canot take its address.
+```Go
+_ = &ages["bob"] // compile error: cannot take address of map element
+```
+
+The order of map iteration is unspecified.
+We can access the map elements by sorting the keys beforehand (store them in a slice),
+and accessing the map values via sorted keys.
+
+Storing to a `nil` map causes a panic.
+Other operations, `len`, `delete`, lookup, `range` are safe to be applied on `nil` maps.
+
+Go does not provide a set type.
+But, `map`s can be used instead. `map[T]bool`.
+Map keys have to be unique.
+
+`Struct` is an aggregate data type that groups together zeao or more named values of arbitrary types as a single entity.
+Each value is called a field.
+
+Field order is `significant` to the type identity.
+
+A struct type may contain a mixture of exported and unexported fields.
+
+A named struct type `S` can't declare a field of the same type `S`: an aggregate value cannot contain itself.
+
+The zero value for a struct is composed of the zero values of each of its fields.
+
+Empty struct has zero size.
+
+Go is a `call-by-value` language.
+
+If all the fields ofa struct are comparable, the struct itself is comparable.
+It can also be used as a map key.
+
+Anonymous fields are the fields in structs with type but no names.
+The type must be a named type or a pointer to a named type.
+
+In nested structs, the outer struct type gains methods of embedded types.
+`Composition` is the central to object-oriented programming in Go.
+
+`marshaling`: Converting a Go data structure to JSON is called `marshaling`.
+`json.MarchalIndent` can be used to pretty print.
+
+Only exported fields are marshalled.
+
+A field tay is a string of metadata associated at compile time with the field of a struct.
+
+`omitempty`: No JSON output should be produced if the field has the zero value for its type.
+
+`unmarshaling`: Decoding JSON to Go data structure.
+
+The matching process that associates JSON names with Go struct names during unmarshaling is case-insensitive.
+
+
+
 
 
 
