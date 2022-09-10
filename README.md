@@ -565,15 +565,125 @@ A field tay is a string of metadata associated at compile time with the field of
 
 The matching process that associates JSON names with Go struct names during unmarshaling is case-insensitive.
 
+A `template` is a string or a file containing one or more portions enclosed in double braces `{{..}}`, called `action.`
 
+The pipe operator `|` can be used in actions.
 
+## Functions
 
+A function lets us wrap up a sequence of statements in a unit that can be called from elsewhere in a program, perhaps multiple times.
 
+A function hides it's implementation details from its users.
+```go
+func name(parameter-list)  (result-list) {
+	body
+}
+```
+The parameter list specifies the names and types of the function's parameters, which care the local variables whose values or arguments are supplied by the caller.
 
+Leaving off the result list entirely declares a function that does not return any value and is called only for its effects.
 
+Like parameters, results may be named. In that case, each name declares a local variable initialized to the zero value for its type.
 
+Two functions have the same type or signature if they have the same sequence of parameter types and the same sequence of result types.
 
+Go has no concept of default parameter values, nor any way to specify arguments by name, so the names of parameters and results don't matter to the caller except as documentation.
 
+Arguments are passed by values to the functions. So, they receive a copy of each argument. If the argument contains a reference type variable like slice, map, any modification to the argument will have an impact on the referenced value.
+
+A function is recursive if it is calling itself either directly or indirectly.
+
+The `golang.ord/x/...` repositories are not in the standard library either because they are still under development or they are not needed by the majority of Go programmers. They are maintained by the Go team.
+
+Many programming language implementations use a fixed-size function call stack. Fixed-size stack impose a limit on the depth of recursion.
+In contract, typical Go implementations use variable-size stacks that start small and grow as needed up to a limit on the order ofa gigabyte.
+
+Go's garbage collector recycles unused memory, but do not assume it will release unused operating system resources like open files and network connections. 
+They should be closed explicitly.
+
+Conventionally, a final bool result from a function indicates success; an error result often needs no explanation.
+
+In a function with named results, the operands of a return statement may be omitted. This is called `bare return`.
+Bare returns are not encouraged to use due to difficulty of making sense out of the code while reading by a human.
+
+A function for which failure is an expected behavior returns an additional result, conventionally the last one. 
+If the failure has only one possible cause, the result is a boolean.
+If the failure may have a variety of causes for which the caller will need an explanation, the type of the additional result is error.
+
+The built-in type `error` is an `interface` type. If it is `nil`, that means `success`.
+
+Usually when a function returns a non-nil error, its other results are undefined and should be ignored. However, some functions may return partial result, if this is the case, this should be well documented.
+
+Go programs use ordinary control-flow mechanism like if and return to respond to errors. This style undeniably demands that more attention be paid to error-handling logic, which is precisely the point.
+
+When a function call returns an error, it's the caller's responsibility to check it and take appropriate action.
+
+Error propagation means making a failure in a subroutine a failure of the calling routine.
+
+Because error messages are frequently chained together, message strings should not be capitalized and newlines should be avoided.
+
+In general, the call `f(x)` is responsible for reporting the attempted operation `f` and the argument value `x` as they relate to the context of the error.
+
+We can `retry` the failed operation, possibly with a delay between tries, and perhaps with a limit on the number of attempts or the time spent trying before giving up entirely.
+
+Stopping the entire program should be reserved to main package. And, it should only happen when it is impossible to recover from a failure.
+
+Generally, after checking an error, failure is usually dealt with before success. So that success section does not handled in an else statement with an indentation.
+
+Functions are `first-class values` in Go. They have types, and they may be assigned to variables or passed to or returned from functions.
+
+The zero value of a function type is nil. Calling a nil function value causes a panic.
+
+`strings.Map` applies a function to each character of a string, joining the results to make another string
+
+The `*` adverb prints a string padded with a variable number of spaces when using `fmt.Printf`.
+```go
+fmt.Printf("%*s</%s>\n", 2, "", n.Data)
+```
+
+Named functions can be declared only at the package level. We cannot use nested functions.
+
+A `function literal` is written like a function declaration, but without a name following the func keyword. It is an expression, and its value is called an anonymous function.
+
+When an anonymous function requires recursion, we must first declare a variable, and then assign the anonymous function to that variable.
+
+Declare a local variable in for loops if the captured values have to be frozen and used after exiting the for loop.
+
+A `variadic function` is one that can be called with varying numbers of arguments.
+
+Slice elements can be flatten with a preceding ellipsis when calling a variadic function.
+```go
+values := []{1,2,3,4}
+fmt.Println(values...)
+```
+
+Defer functions are ordinary functions. 
+Their arguments are evaluated when they are declared, but they are run when the outer function finishes. 
+This includes panic, too. Multiple defer statements run in LIFO.
+
+The right place for a defer statement that releases a resource is immediately after the resource has been successfully acquired.
+
+Do not use defer statement in for loop or be very careful. It could result in resource leak, i.e., file descriptors.
+
+When the Go runtime detects mistakes like out-of-bounds array access or nil pointer dereference, it panics.
+
+During a panic, normal execution stops, all deferred function calls in that gorutine are executed, and the program crashes with a log message.
+
+The panic function can be used when some impossible situation happens, for instance, execution reaches a case that logically can't happen.
+Intentional panic should be only used for logical inconsistencies. 
+In a robust program, expected error, the kind that arise from incorrect input, misconfiguration, or failing I/O should be handled gracefully; they are best dealt with using error values.
+
+When a panic occurs, all deferred functions are run in reverse order.
+
+The recover function must be used in deferred call. It will return the value/cause of the panic.
+
+Entire stack can be written out with `runtime.Stack`.
+
+We should not attempt to recover from another package's panic.
+
+We can recover from a panic selectively. We can check the panic reason, if it is a known/expected issue then we can return an error, otherwise continue panicking.
+
+From some conditions there is no recovery. Running out of memory, for example, causes the Go runtime to terminate the program  with a fatal error.
 
 
 

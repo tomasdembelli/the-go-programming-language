@@ -23,25 +23,23 @@ func TestTypes(t *testing.T) {
 
 func f() *int {
 	v := 1
-	return &v	
+	return &v
 }
 
 func inc(v *int) {
 	*v++
 }
 
-func update(s []int, i, with int){
+func update(s []int, i, with int) {
 	s[i] = with
 }
 
-
 func TestPointer(t *testing.T) {
 
-	var pz *int  // declaring pz as a pointer to an int value
+	var pz *int // declaring pz as a pointer to an int value
 	if pz != nil {
 		t.Errorf("expected nil, but got %v", pz)
 	}
-
 
 	a := 5
 	p := &a
@@ -67,7 +65,7 @@ func TestPointer(t *testing.T) {
 		t.Errorf("expected 6, got %d", v)
 	}
 
-	s := []int{1,2}
+	s := []int{1, 2}
 	update(s, 0, 999)
 	if s[0] != 999 {
 		t.Errorf("expected 999, but got %d", s[0])
@@ -81,16 +79,15 @@ func TestStrings(t *testing.T) {
 		t.Errorf("expected 4, got %d", len(engWord))
 	}
 
-	euroSign := "€"  // the non-ASCII `€` character takes 3 bytes, hence the length is 3 as opposed to 1 (number of characters)
+	euroSign := "€" // the non-ASCII `€` character takes 3 bytes, hence the length is 3 as opposed to 1 (number of characters)
 
 	if len(euroSign) != 3 {
 		t.Errorf("expected 3, got %d", len(euroSign))
 	}
 
-	fmt.Println("\xE2\x82\xAC")  // "€"
+	fmt.Println("\xE2\x82\xAC") // "€"
 
-
-	if euroSign != "\xE2\x82\xAC"  {
+	if euroSign != "\xE2\x82\xAC" {
 		t.Errorf("expected %v, but got %v", euroSign, "\xE2\x82\xAC")
 	}
 
@@ -99,7 +96,7 @@ func TestStrings(t *testing.T) {
 	// }
 
 	// for i:=0; i < len(euroSign); i++  {
-    //     r := euroSign[i]
+	//     r := euroSign[i]
 	// 	fmt.Printf("%d, %q, %d\n",i, r, r)
 	// }
 
@@ -114,28 +111,28 @@ func TestStrings(t *testing.T) {
 }
 
 func TestArray(t *testing.T) {
-	a := [...]int{1,2}
+	a := [...]int{1, 2}
 
 	// length is determined by the number of initializers.
-	if len(a) != 2 { 
+	if len(a) != 2 {
 		t.Errorf("expected 2, got %d", len(a))
 	}
 
 	q := [...]int{99: 5}
 
 	if len(q) != 100 {
-		t.Errorf("expected 100, got %d", len(q))		
+		t.Errorf("expected 100, got %d", len(q))
 	}
 
-	months := [...]string{"January", "February", "March", "April"}  // type is array
+	months := [...]string{"January", "February", "March", "April"} // type is array
 
-	s1 := months[1:3]  // type is slice: len 2, cap 3 (cap starts from 1 - February, but ends at the end of the array - April)
+	s1 := months[1:3] // type is slice: len 2, cap 3 (cap starts from 1 - February, but ends at the end of the array - April)
 
 	if cap(s1) != 3 {
 		t.Errorf("expected 3, got %d", cap(s1))
 	}
 
-	s1[1] = "hello"  // this will mutate the underlying array - months[2]
+	s1[1] = "hello" // this will mutate the underlying array - months[2]
 
 	if months[2] != "hello" {
 		t.Errorf("expected hello, got %s", months[2])
