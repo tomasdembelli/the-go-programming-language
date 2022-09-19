@@ -797,8 +797,36 @@ we can assign any value to the empty interface.**
 Ensuring that a certain type satisfies an interface at compile time, 
 we can instantiate that type with a nil value and assign to the interface.
 
-181
+Calling any method of a nil interface value causes a panic.
 
+`Len`, `Less`, `Swap` are the required methods for the `sort.Sort` function.
+
+A `multiplexer` aggregates multiple http handlers into a single handler.
+
+_Go doesn't have a canonical web framework analogous to Ruby's Rails or Python's Django.
+This is not to say that such frameworks don't exist, but the building blocks in Go's standard library are
+flexible enough that frameworks are often unnecessary. Furthermore, although frameworks are convenient in the
+early phases of a project, their additional complexity can make longer-term maintenance harder._
+
+`HandlerFunc` is a function type that has `ServeHTTP` method on it. Observe how the receiver function is used.
+
+The web server invokes each handler in a new goroutine.
+
+A `type assertion` is an operation applied to an interface value. 
+The asserted type can be `concrete` type or an `interface` type. 
+If it is concrete then the result will be the `extraction of dynamic values`. 
+If the asserted type is an interface, then, the result will be the same asserted interface if the check succeeds.
+
+Checking for substrings of error messages may be useful during testing to ensure that 
+functions fail in the expected manner, but it's `inadequate` for production code.
+
+Errors can be discriminated via type assertion.
+
+Interfaces are only needed when there are two or more concrete types that must be dealt with a uniform way.
+
+When designing an interface ask only for what you need. `Small interfaces` are easier to `satisfy`.
+
+217
 
 
 
