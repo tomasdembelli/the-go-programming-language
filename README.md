@@ -826,13 +826,141 @@ Interfaces are only needed when there are two or more concrete types that must b
 
 When designing an interface ask only for what you need. `Small interfaces` are easier to `satisfy`.
 
-217
+## Goroutines an Channels
 
+Go supports 2 types of concurrency: 
+1. Communicating sequential processes (CSP), 
+2. Shared memory multithreading.
 
+The difference between OS threads an goroutines is quantitative, not qualitative.
 
+`Main goroutine` calls the `main function`.
 
+A `channel` is a communication mechanism that lets one goroutine send values to another goroutine. 
+Each channel is `conduit` for values of a particular type, called the `channel's element type`.
 
+`Channel is a reference` to the data structure created by make. The zero value of a channel is nil.
 
+A `receive` expression `<-ch` whose result is not used is a valid statement.
 
+Sending to a closed channel will panic. 
+However, reading from a closed channel will yield the values that have been sent until no more values are left. 
+Any receive operations thereafter complete immediately and yield the zero value of the channel's element type.
 
+A `send` or `receive` operation to an unbuffered channel will block the interacting goroutine until 
+corresponding operation is fulfilled by another goroutine.
 
+When operation `X` neither happens before operation `Y` nor after operation `Y`, we say that `X is concurrent with Y`.
+
+Messages have two aspects; the `content` and the `timing` of the message. 
+When the `timing is as important` as the message content itself, we call them as `events` to stress that fact.
+
+Channels can be used to connect goroutines together so that the output of one is the input to another. 
+This is called a `pipeline`.
+
+A channel that the garbage collector determines to be unreachable will have its resources reclaimed 
+whether or not it is closed. 
+Close the channel when it is important to tell the receiving goroutines that all data have been sent.
+
+Attempting to close an already-closed channel causes a panic, as does closing a nil channel.
+
+It is a compile time error to close a receive only channel.
+
+There is an implicit conversion from bidirectional to unidirectional when a bidirectional channel passed as
+an argument to a function that accepts a unidirectional channel, i.e., receive only. 
+However, there is no going back, means that within the function the passed channel (originally bidirectional) 
+cannot be converted back to its original type.
+
+Buffered channels decouple the sending and receiving channels.
+
+`Goroutine leak` occurs when a goroutine is blocked. Unlike garbage variables, leaked goroutines are not automatically 
+collected, so it is important to make sure that goroutines terminate themselves when no longer needed.
+
+`Embarrassingly parallel`: completely independent sub-problems.
+
+`Unbounded parallelism` is rarely a good idea since there is always a limiting factor in the system, 
+such as the number of CPU cores for compute-bound workloads, the number of spindles and heads for 
+local disk I/O operations, the bandwidth of the network for streaming downloads, or the serving capacity 
+of a web service.
+
+The `select` statement is used for `multiplexing operations`.
+
+A `select` waits until a communication for some case is ready to proceed. 
+It then performs that communication and executes the case's `associated statements`; 
+the other communications do not happen. A select with no cases, `select{}`, `waits forever`.
+
+If multiple cases are ready, `select` picks one at `random`, 
+which ensures that every channel has an equal chance of being selected.
+
+`Non-blocking` communication is possible with `select` statement's `default case`.
+
+`Counting semaphore`:
+When we want to limit the number of concurrencies, we can create a buffered channel and use it as a blocking mechanism. 
+Send at operation start, receive at the end of operation with a `defer`.
+
+When we cannot confidently say that one event happens before the other, then the events X and Y are concurrent.
+
+A `function` is `concurrency-safe` if it continues to work correctly even when called concurrently, that is, 
+from two or more goroutines with `no additional synchronization`.
+
+A `type` is `concurrency-safe` if all its `accessible` methods and operations are concurrency-safe.
+
+Exported package-level functions are generally expected to be concurrency-safe.
+
+A `data race` occurs whenever two goroutines access the same variable concurrently and at least one of the accesses is a 
+write.
+
+Data structures that are never modified or are immutable are inherently concurrency-safe and need no synchronization.
+
+Do not communicate by sharing memory; instead, share memory by communicating.
+
+Preventing a data race condition:
+1. Do not mutate the variable.
+2. Avoid access to the variable from multiple goroutines.
+3. If accessing from multiple goroutines is inevitable then synchronise the access.
+
+By convention, the variables guarded by a mutex are declared immediately after the declaration of the mutex itself.
+
+The region of code between Lock and Unlock in which a goroutine is free to read and modify the shared variables is 
+called a `critical section`.
+
+Defer statement executes after the return statement has read the value of the returned variable.
+
+With concurrent programs, `favor clarity` and `resist premature optimization`.
+
+`Deadlock` is where nothing can proceed.
+
+When you use a mutex, make sure that both the mutex and the variables it guards are `not exported`, 
+whether they are package-level variables or the fields of a struct.
+
+`sync.RWMutex`: multiple readers, single writer lock.
+Call `RLock()` for locking for readers only.
+
+An `RWMutex` requires more complex internal bookkeeping, making it slower than a regular mutex for uncontended locks.
+
+`Simple concurrency pattern`: where possible, confine variables to a single goroutine; for all other variables, 
+use `mutual exclusion`.
+
+`sync.Once` consists of a mutex and a boolean variable that records whether initialization has taken place; 
+the mutex guards both the boolean and the client's dada structures. 
+The sole method, `Do`, accepts the initialization function as its argument.
+
+The `-race` flag can be used with `build`, `run`, or `test`.
+
+The `race detector` cannot prove that none will ever occur. 
+It can only detect race conditions that occur during a run.
+
+`Memoizing` a function: caching the result of a function so that it need be computed only once.
+
+OS thread is fixed size, `2MB`. It might be too big or too small for different cases.
+Goroutine's size is variant. It starts with `2KB` and can grow up to `1GB`.
+
+OS threads `context switching` is slow.
+
+Context switching for goroutines is fast and cheap. 
+Go runtime multiplexes `m` goroutines on `n` OS threads. This is called `m:n scheduling`.
+
+Go scheduler uses a parameter called `GOMAXPROCS` to determine how many OS threads may be 
+actively executing Go code simultaneously. Its default value is the number of CPUs on the machine.
+
+284
