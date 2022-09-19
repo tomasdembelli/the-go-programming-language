@@ -735,6 +735,72 @@ Common choice for a method receiver name is the first letter of the type name.
 
 Method or field calls on receivers are called `selectors`.
 
+Methods may be defined on any named type defined in the same package 
+unless the underlying type is a pointer or an interface.
+
+Using methods over functions allows using shorter method names due to descriptive receiver name.
+
+If we need to update the receiver, we must use a pointer receiver.
+
+Convention: if any of the receiver type is a pointer, then all receivers should be pointers.
+
+We can call methods of the embedded struct using a receiver of type the outer struct, 
+even though the outer one has no declared methods. 
+This is called promoting the methods of embedded struct to outer struct. 
+This is all possible with composition of several fields.
+
+Method promotion involves instructing compiler to generate additional wrapper methods 
+that delegate to the declared methods (on the inner struct) to the outer struct.
+
+The receiver of the embedded methods are the embedded structs (inner), not the outer struct.
+
+`Encapsulation` means making variables or methods of an object inaccessible to its clients.
+
+Go has only one mechanism to control the visibility of names: 
+capitalized identifiers are exported from the package in which they are defined, and un-capitalized names are not.
+To encapsulate an object, we must make it a struct.
+
+The unit of encapsulation is the `package`, not the type as in many other languages.
+The fields of a struct type are visible to all code within the same package. 
+Whether the code appears in a function or a method makes no difference.
+
+Omit the `Get` prefix for brevity from object attributes.
+Instead of `GetName`, use `Name`.
+Same convention applies for `Fetch`, `Find`, and `Lookup`.
+
+## Interfaces
+
+Interface types express `generalizations` or `abstractions` about the behaviours of other types.
+
+Interfaces are `satisfied implicitly`. Simply possessing the necessary methods is enough.
+
+A `concrete type` specifies the exact representation of its values and exposes the intrinsic operations of that 
+representation.
+
+An interface is an `abstract type`. We can only know what behaviours are provided by its methods.
+
+`Substitutability`: The freedom to substitute one type for another that satisfies the same interface.
+
+An interface type specifies a set of methods that a concrete type must posses to be considered an instance of that 
+interface.
+
+Interface types can be embedded.
+
+A type satisfies an interface if it possesses all the methods the interface requires.
+
+A pointer to a type and the type itself might satisfy different interfaces. 
+Some methods of a type might have a pointer receiver while others do not.
+
+**The empty interface type places no demands on the types that satisfy it,
+we can assign any value to the empty interface.**
+
+Ensuring that a certain type satisfies an interface at compile time, 
+we can instantiate that type with a nil value and assign to the interface.
+
+181
+
+
+
 
 
 
