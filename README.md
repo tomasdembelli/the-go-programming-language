@@ -963,4 +963,81 @@ Go runtime multiplexes `m` goroutines on `n` OS threads. This is called `m:n sch
 Go scheduler uses a parameter called `GOMAXPROCS` to determine how many OS threads may be 
 actively executing Go code simultaneously. Its default value is the number of CPUs on the machine.
 
-284
+## Packages
+
+A package defining a `command` (an executable Go program) always has the `main`, regardless of the package's impart path. 
+This is a signal to go build that it must invoke the linker to make an executable file.
+
+`Blank import` can be used to import packages for their `side effects`.
+
+`GOPATH` has three subdirectories:
+1. `src` for the source code.
+2. `pkg` for compiled packages.
+3. `bin` for the executables.
+
+Go doc comments are always complete sentences, and the first sentence is usually a summary that starts 
+with the name being declared. 
+Function parameters and other identifiers are mentioned without quotation or markup.
+
+Go favor brevity and simplicity in documentation as in all things, since documentation, like code, 
+requires maintenance too.
+
+The `package` is the most important mechanism for `encapsulation` in Go programs. 
+Unexported identifiers are visible only within the same package, 
+and exported identifiers are visible to the world.
+
+`Internal` packages are for the directory tree rooted at the parent of the internal directory. (local)
+
+## Testing
+
+`Testing`, by which we implicitly mean automated testing, is the practice of writing small programs that check
+that the code under test (the production code) `behaves as expected` for certain inputs, which are usually either 
+carefully chosen to exercise certain features or randomized to ensure broad coverage.
+
+Principals of writing code:
+We write short functions that focus on one part of the task.
+We have to be careful of boundary conditions, thin about data structures, and reason about what 
+results a computation should produce from suitable inputs.
+
+`_test.go` files are not part of ordinary built. They are only included when built by `test`.
+
+Go test scans the test files and generates a temporary main to run the tests.
+
+The style of `table-driven` testing is very common in Go.
+It is straightforward to add new table entries as needed, and since the assertion logic is not duplicated, 
+we can invest more effort in producing a good error message.
+
+When using `randomized testing` (giving random input to test cases), how do we know what output to expect from our 
+function?
+There are two strategies. The first is to write an alternative implementation of the function that uses a 
+less efficient but simpler and clearer algorithm, and check that both implementations give the same result. 
+The second is to create input values according to a pattern to that we know what output to expect.
+
+Testing only exported functions, public API is a black box testing. Opposite is white box.
+
+Tests should be considered as user interfaces, where the users are the maintainers of the code.
+
+We should `test only properties we care about`. This will prevent writing fragile tests.
+Test your program's simpler and more stable interfaces in preference to its internal functions.
+Be selective in your assertions. 
+Don't check for exact string matches, for example, but look for relevant substrings that will remain unchanged 
+as program evolves.
+
+The fastest program is often the one that makes the fewest memory allocations.
+
+The `benchmem` flag will include memory allocation statistics in its reports.
+`4 allocs/op` means 4 times memory allocations per operation.
+
+When we wish to look carefully at the speed of our programs, the best technique for identifying the critical code is profiling.
+Profiling is a form of dynamic program analysis that measures, for example, the space or time complexity of a program, 
+the usage of particular instructions, or the frequency and duration of function calls (wiki).
+
+A `CPU profile` identifies the functions whose execution requires the most CPU time.
+
+A `heap profile` identifies the statements responsible for allocating the most memory.
+
+A `blocking profile` identifies the operations responsible for blocking goroutines the longest, 
+such as system calls, channel sends and receives, and acquisition of locks.
+
+Profiling is especially useful in long-running applications, 
+so the Go runtime profiling features can be enabled under programmer control using the runtime API.
