@@ -826,13 +826,13 @@ Interfaces are only needed when there are two or more concrete types that must b
 
 When designing an interface ask only for what you need. `Small interfaces` are easier to `satisfy`.
 
-## Goroutines an Channels
+## Goroutines and Channels
 
 Go supports 2 types of concurrency: 
 1. Communicating sequential processes (CSP), 
 2. Shared memory multithreading.
 
-The difference between OS threads an goroutines is quantitative, not qualitative.
+The difference between OS threads and goroutines is quantitative, not qualitative.
 
 `Main goroutine` calls the `main function`.
 
@@ -994,9 +994,9 @@ and exported identifiers are visible to the world.
 that the code under test (the production code) `behaves as expected` for certain inputs, which are usually either 
 carefully chosen to exercise certain features or randomized to ensure broad coverage.
 
-Principals of writing code:
+_Principals of writing code:_
 We write short functions that focus on one part of the task.
-We have to be careful of boundary conditions, thin about data structures, and reason about what 
+We have to be careful of boundary conditions, think about data structures, and reason about what 
 results a computation should produce from suitable inputs.
 
 `_test.go` files are not part of ordinary built. They are only included when built by `test`.
